@@ -17,6 +17,12 @@ class Prime extends \Phalcon\Mvc\Model
     * @return array
     */
     public function atkins($start=2, $end=1000) {
+        if (!is_numeric($start) || !is_numeric($end)) {
+	    throw new exception("Start and End must be numeric", "400");
+        }
+        if ($end > 100000) {
+	    throw new exception("Be reasonable, keep it under 100000", "400");
+        }
 	$i = 2;
         //pre-populate the array with all the numbers
 	$arrPrimes = array();
@@ -46,6 +52,9 @@ class Prime extends \Phalcon\Mvc\Model
         //and just chop off the front part.
         //the function above guarantees us order, so we can do this fast
 	if ($start != 2) {
+            if ($start < 2) {
+                $start = 2;
+            }
 	    foreach ($arrPrimes as $key) {
 		if ($key < $start) {
 		    unset($arrPrimes[$key]);

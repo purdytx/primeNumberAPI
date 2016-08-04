@@ -25,11 +25,24 @@ $di = new FactoryDefault();
 $app = new Micro($di);
 
 //routing here
-$app->get('/api/prime', function() use ($app) {
+$app->get('/api/prime/{start:[0-9]+}/{end:[0-9]+}', function($start, $end) use ($app) {
+
     $clPrime = new Prime();
-    $primes = $clPrime->atkins();
 
     $response = new Response();
+
+    try {
+        $primes = $clPrime->atkins($start,$end);
+    } catch (exception $e) {
+         $response->setJsonContent(
+	     array(
+                 'status' => $e->getCode(),
+                 'data' => $e->getMessage()
+             )
+         );
+	 
+         return $response;
+    }
 
     $response->setJsonContent(
         array(
