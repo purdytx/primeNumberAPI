@@ -17,6 +17,9 @@ class Prime extends \Phalcon\Mvc\Model
     * @return array
     */
     public function atkins($start=2, $end=1000) {
+        if ($start >= $end) {
+	    throw new exception("Please check your range", "400");
+        }
         if (!is_numeric($start) || !is_numeric($end)) {
 	    throw new exception("Start and End must be numeric", "400");
         }
